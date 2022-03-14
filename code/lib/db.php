@@ -88,19 +88,37 @@ function update_article($dbconn, $title, $content, $aid) {
 }
 
 function authenticate_user($dbconn, $username, $password) {
-	$query=
-		"SELECT
-		authors.id as id,
+	$name = $pw = $rs = "";
+    	$name = test_input($username);
+    	$pw = test_input($password);
+	$statementname = "AuthQuery";
+	#prepared statement 
+	$sqlquery = "
+		select authors.id as id, 
 		authors.username as username,
 		authors.password as password,
 		authors.role as role
-		FROM
-		authors
+		FROM authors
 		WHERE
-		username='".$_POST['username']."'
-		AND
-		password='".$_POST['password']."'
+		username=$1 AND password=$2
 		LIMIT 1";
-	return run_query($dbconn, $query);
+	
+	$result = pg_query_params($dbconn, 'SELECT name FROM pg_prepared_statements WHERE name = $1', array($statementname));
+	if (pg_num_rows($result) == 0) {
+    	$result = pg_prepare($dbconn, $statementname, $sqlquery);
+	}
+	$rs = pg_execute($dbconn, $statementname, array($name, $pw));
+	return $rs;
+	
+	
 }	
+
+function test_input($data) 
+{
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+
 ?>
