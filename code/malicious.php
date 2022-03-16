@@ -4,9 +4,10 @@
 <?php
 if (isset($_GET['aid'])){
     $aid = $_GET['aid'];
+    $image_url = "deletearticle.php?aid=$aid";
 }
 ?>
-<img src="deletearticle.php?aid=<?php echo $aid ?>" width="100" height="100">
-<a href="/admin.php">go back</a>
+<img src="<?php echo $image_url;?>" width="100" height="100"> 
+<a href="/admin.php">go back to admin</a>
 </body>
 </html>

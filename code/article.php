@@ -7,6 +7,7 @@
 		header("Location: /"); 
 	}
 	#uses get, can csrf here
+	#aid is set here, also set the token here
 	$aid = $_GET['aid'];
 	$result=get_article($dbconn, $aid);
 	$row = pg_fetch_array($result, 0); //There should only be one row
@@ -32,10 +33,15 @@
 	</p><p>
 		<?php echo $row['content'] ?>
 	</p>
+	<?php echo $_SESSION['token']?>
 	<!-- csrf link -->
 	<a href="/malicious.php?aid=<?php echo $_GET['aid']?>">go back</a>
 
-      </div><!-- /.blog-post -->
+	<form action="/malicious.php?aid=<?php echo $_GET['aid']?>" method="GET">
+	<input type="submit" value="Go Back" name="submit" class="btn btn-primary">
+	</form>
+
+    </div><!-- /.blog-post -->
 	<?php include("templates/contentstop.php"); ?>
 	
 	<?php include("templates/footer.php"); ?>
