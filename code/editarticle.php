@@ -38,9 +38,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 	<textarea name='content' id="inputContent"><?php echo $row['content'] ?></textarea>
 	</div>
 	<input type="submit" value="Update" name="submit" class="btn btn-primary">
-</form>
 <br>
-
 	<?php include("templates/contentstop.php"); ?>
 	<?php include("templates/footer.php"); ?>
 </body>

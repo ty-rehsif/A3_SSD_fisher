@@ -2,6 +2,7 @@
 session_start();
 include("config.php");
 include("lib/db.php");
+#put the token here, if statement 
 
 $aid = $_GET['aid'];
 #echo "aid=".$aid."<br>";

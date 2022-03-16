@@ -6,6 +6,7 @@
 	if (!isset($_GET['aid'])) {
 		header("Location: /"); 
 	}
+	#uses get, can csrf here
 	$aid = $_GET['aid'];
 	$result=get_article($dbconn, $aid);
 	$row = pg_fetch_array($result, 0); //There should only be one row
@@ -15,9 +16,6 @@
 <head>
 <title><?php echo $row['title'] ?></title>
 	<?php include("templates/header.php"); ?>
-
-
-
 </head>
 <body>
 	<?php include("templates/nav.php"); ?>
@@ -34,8 +32,13 @@
 	</p><p>
 		<?php echo $row['content'] ?>
 	</p>
+	<!-- csrf link -->
+	<a href="/malicious.php?aid=<?php echo $_GET['aid']?>">go back</a>
+
       </div><!-- /.blog-post -->
 	<?php include("templates/contentstop.php"); ?>
+	
 	<?php include("templates/footer.php"); ?>
+	
 </body>
 </html>
