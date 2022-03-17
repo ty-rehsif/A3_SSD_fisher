@@ -33,11 +33,10 @@
 	</p><p>
 		<?php echo $row['content'] ?>
 	</p>
-	<?php echo $_SESSION['token']?>
 	<!-- csrf link -->
-	<a href="/malicious.php?aid=<?php echo $_GET['aid']?>">go back</a>
-
-	<form action="/malicious.php?aid=<?php echo $_GET['aid']?>" method="GET">
+	<a class="btn btn-primary" href="/malicious.php?aid=<?php echo $_GET['aid']?>">Schrodinger's Cat </a>
+	<br><br>
+	<form action="/admin.php" method="GET">
 	<input type="submit" value="Go Back" name="submit" class="btn btn-primary">
 	</form>
 

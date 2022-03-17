@@ -11,12 +11,11 @@
 	<?php include("templates/contentstart.php"); ?>
 
 <h2>Article Management</h2>
-<!-- token -->
-<?php $_GET['token'] = (bin2hex(openssl_random_pseudo_bytes(32))); 
+<!-- creating token, assigning to session and local variables -->
+<?php 
+$_GET['token'] = (bin2hex(openssl_random_pseudo_bytes(32))); 
 $localtoken = $_GET['token'];
-$_SESSION['token'] = $localtoken;
-
-echo $_SESSION['token'];?>
+$_SESSION['token'] = $localtoken;?>
 <p><button type="button" class="btn btn-primary" aria-label="Left Align" onclick="window.location='/newarticle.php';">
 New Post <span class="fa fa-plus" aria-hidden="true"></span>
 </button></p>
@@ -35,6 +34,7 @@ New Post <span class="fa fa-plus" aria-hidden="true"></span>
   <td><?php echo substr($row['date'],0,10) ?></td>
   <td><a href="/editarticle.php?aid=<?php echo $row['aid'] ?>"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i></a></td>
   <td>
+	  <!-- replace link with form, included csrf token and row aid-->
 	  <form method="POST" action="/deletearticle.php">
 		  <input type="hidden" id="aid" name="aid" value="<?php echo $row['aid'];?>" >
 		  <input type="hidden" id="localtoken" name="localtoken" value="<?php echo $localtoken;?>" >
@@ -50,15 +50,3 @@ New Post <span class="fa fa-plus" aria-hidden="true"></span>
 	<?php include("templates/footer.php"); ?>
 </body>
 </html>
-<script type="text/javascript">
-	var elems = document.getElementsByClassName('confirmation');
-	var conformit = function (e){
-		if (!confirm('Delete? Are you sure?')) e.preventDefault();
-	};
-	for (var i=0, l = elems.length; i < l; i++){
-		elems[i].addEventListener('click', conformit, false);
-	}
-</script>
-
-<!-- auto submit a form with a token and capture it -->
-<form method="POST" action ="submit
