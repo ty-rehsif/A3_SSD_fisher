@@ -1,30 +1,39 @@
 <?php include("templates/page_header.php");?>
 <?php
 
+#if form is submitted 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	#validate data
 	$name = $pw = "";
+  #if username or password fields are empty log eror no value 
 	if ((empty($_POST['username'])) or (empty($_POST['password']))) {  
-    	error_log("Error! You didn't enter the username or password.", 0);    
-	} 
-	else {  
+    	error_log("Error! You didn't enter the username or password.", 0); 
+      exit;   
+	  }else {   #if values exist filter them 
     	$name = $_POST['username'];
     	$pw = $_POST['password'];
       $name = test_input($name);
       $pw = test_input($pw);
-	}
-  #check entered password
-  #testinput
-  #test hash value vs table 
+	    }
+  
+  #authenticate user
 	$result = authenticate_user($dbconn, $name, $pw);
-	if (pg_num_rows($result) == 1) {
-		$_SESSION['username'] = $name;
-		$_SESSION['authenticated'] = True;
-		$_SESSION['id'] = pg_fetch_array($result)['id'];
-		//Redirect to admin area
-		header('Location: /admin.php');
-	}	
+  #if result is found 
+  if ($result){
+    if (pg_num_rows($result) == 1) {
+      $_SESSION['username'] = $name;
+      $_SESSION['authenticated'] = True;
+      $_SESSION['id'] = pg_fetch_array($result)['id'];
+      //Redirect to admin area
+      header('Location: /admin.php');
+      }
+  }else{ #if didnt find user
+    $_SESSION['authenticated'] = False;
+    #redirect to the login page
+    header('Location: /login.php');
+  }
 }
+
 
 
 ?>

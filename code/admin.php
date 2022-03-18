@@ -13,9 +13,17 @@
 <h2>Article Management</h2>
 <!-- creating token, assigning to session and local variables -->
 <?php 
+#if the session isnt set or the session is not authenticated, unset the session values, destroy session and send to login page
+if(!(isset($_SESSION['authenticated'])) && !($_SESSION['authenticated'])){
+	session_unset();
+	session_destroy();
+	header("Location: /login.php");
+  }
+  else{
 $_GET['token'] = (bin2hex(openssl_random_pseudo_bytes(32))); 
 $localtoken = $_GET['token'];
 $_SESSION['token'] = $localtoken;
+  }
 ?>
 <p><button type="button" class="btn btn-primary" aria-label="Left Align" onclick="window.location='/newarticle.php';">
 New Post <span class="fa fa-plus" aria-hidden="true"></span>

@@ -8,6 +8,7 @@ if ($debug) {
 		echo 'Connection status ok';
 	} else {
 		echo 'Connection status bad';
+		error_log("Connection status bad", 0);
 	}    
 }
 
@@ -18,6 +19,7 @@ function run_query($dbconn, $query) {
 	$result = pg_query($dbconn, $query);
 	if ($result == False and $debug) {
 		echo "Query failed<br>";
+		error_log("Query failed", 0);
 	}
 	return $result;
 }
@@ -103,10 +105,17 @@ function authenticate_user($dbconn, $username, $password) {
 		WHERE
 		username=$1 AND password=$2
 		LIMIT 1';
+	
 	#get value from db
 	$presult = pg_query_params($dbconn, 'SELECT "password" FROM authors WHERE username = $1', array($name));
 	#row 0
+	if($presult){
 	$row = pg_fetch_array($presult,0);
+	}
+	else{
+		error_log("no value found" ,0);
+		throw new Exception("no value");
+	}
 	#put received password from column 1 in a value
 	$dbpw = hashvar($row[0]);
 
@@ -128,11 +137,12 @@ function authenticate_user($dbconn, $username, $password) {
 }
 }	
 
-function test_input($data) 
-{
+function test_input($data) {
+if (!empty($data)){
   $data = trim($data);
   $data = stripslashes($data);
   $data = htmlspecialchars($data);
+}
   return $data;
 }
 
@@ -140,5 +150,4 @@ function hashvar($data){
    $hashp04 = password_hash($data, PASSWORD_DEFAULT);
    return $hashp04;
 }
-
 ?>

@@ -20,3 +20,4 @@ CREATE TABLE articles (
 	PRIMARY KEY (id),
 	FOREIGN KEY (author) REFERENCES authors (id) 
 );
+
