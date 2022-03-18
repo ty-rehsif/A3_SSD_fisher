@@ -1,5 +1,5 @@
 --password is 'password123'
-INSERT INTO authors (username, password, role) VALUES ('admin', 'password123', 'admin');
+INSERT INTO authors (username, password, role) VALUES ('admin', 'password123',  'admin');
 --password is 'password123'
 INSERT INTO authors (username, password) VALUES ('student', 'password123');
 

@@ -15,7 +15,8 @@
 <?php 
 $_GET['token'] = (bin2hex(openssl_random_pseudo_bytes(32))); 
 $localtoken = $_GET['token'];
-$_SESSION['token'] = $localtoken;?>
+$_SESSION['token'] = $localtoken;
+?>
 <p><button type="button" class="btn btn-primary" aria-label="Left Align" onclick="window.location='/newarticle.php';">
 New Post <span class="fa fa-plus" aria-hidden="true"></span>
 </button></p>

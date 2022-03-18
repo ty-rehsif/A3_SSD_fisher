@@ -4,24 +4,25 @@
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	#validate data
 	$name = $pw = "";
-	
-	if ((empty($_POST["username"])) or (empty($_POST["password"]))) {  
-    	$errMsg = "Error! You didn't enter the username or password.";  
-             echo $errMsg;  
+	if ((empty($_POST['username'])) or (empty($_POST['password']))) {  
+    	error_log("Error! You didn't enter the username or password.", 0);    
 	} 
 	else {  
-    	$name = $_POST["username"];
-    	$pw = $_POST["password"];
+    	$name = $_POST['username'];
+    	$pw = $_POST['password'];
+      $name = test_input($name);
+      $pw = test_input($pw);
 	}
-	
+  #check entered password
+  #testinput
+  #test hash value vs table 
 	$result = authenticate_user($dbconn, $name, $pw);
-	
 	if (pg_num_rows($result) == 1) {
 		$_SESSION['username'] = $name;
 		$_SESSION['authenticated'] = True;
 		$_SESSION['id'] = pg_fetch_array($result)['id'];
 		//Redirect to admin area
-		header("Location: /admin.php");
+		header('Location: /admin.php');
 	}	
 }
 
@@ -70,7 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
 	<?php include("templates/nav.php"); ?>
 	<?php include("templates/contentstart.php"); ?>
-
 <form class="form-signin" action="#" method='POST'>
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
       <label for="inputUsername" class="sr-only">Username</label>
