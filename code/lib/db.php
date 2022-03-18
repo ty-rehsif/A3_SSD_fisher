@@ -42,6 +42,25 @@ function get_article_list($dbconn){
 return run_query($dbconn, $query);
 }
 
+//student page articles
+function student_get_article_list($dbconn){
+	$query= 
+		"SELECT 
+		articles.created_on as date,
+		articles.aid as aid,
+		articles.title as title,
+		authors.username as author,
+		articles.stub as stub
+		FROM
+		articles
+		INNER JOIN
+		authors ON articles.author=authors.id
+		where authors.username = 'student'
+		ORDER BY
+		date DESC";
+return run_query($dbconn, $query);
+}
+
 function get_article($dbconn, $aid) {
 	$query= 
 		"SELECT 

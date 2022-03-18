@@ -24,8 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $_SESSION['username'] = $name;
       $_SESSION['authenticated'] = True;
       $_SESSION['id'] = pg_fetch_array($result)['id'];
+      if($name == "admin"){
       //Redirect to admin area
       header('Location: /admin.php');
+      }else{
+        header('Location: /student.php');
+      }
       }
   }else{ #if didnt find user
     $_SESSION['authenticated'] = False;

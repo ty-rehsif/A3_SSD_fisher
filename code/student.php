@@ -14,7 +14,7 @@
 <!-- creating token, assigning to session and local variables -->
 <?php 
 #if the session isnt set or the session is not authenticated, unset the session values, destroy session and send to login page
-if((!(isset($_SESSION['authenticated'])) && !($_SESSION['authenticated']))){
+if(!(isset($_SESSION['authenticated'])) && !($_SESSION['authenticated'])){
 	session_unset();
 	session_destroy();
 	header("Location: /login.php");
@@ -30,11 +30,11 @@ New Post <span class="fa fa-plus" aria-hidden="true"></span>
 </button></p>
 
 <table class="table">
-<tr><th>Post Title</th><th>Author</th><th>Date</th><th>Modify</th><th>Delete</th></tr>
+<tr><th>Post Title</th><th>Author</th><th>Date</th><th>Modify</th></tr>
 
 <?php
 # get articles by user or, if role is admin, all articles
-		$result = get_article_list($dbconn);
+		$result = student_get_article_list($dbconn);
 		while ($row = pg_fetch_array($result)) {
 	?>
 <tr>
@@ -42,17 +42,7 @@ New Post <span class="fa fa-plus" aria-hidden="true"></span>
   <td><?php echo $row['author'] ?></td>
   <td><?php echo substr($row['date'],0,10) ?></td>
   <td><a href="/editarticle.php?aid=<?php echo $row['aid'] ?>"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i></a></td>
-  <td>
-	  <!-- replace link with form, included csrf token and row aid-->
-	  <form method="POST" action="/deletearticle.php">
-		  <input type="hidden" id="aid" name="aid" value="<?php echo $row['aid'];?>" >
-		  <input type="hidden" id="localtoken" name="localtoken" value="<?php echo $localtoken;?>" >
-		  <button type="submit" class="btn btn-success" name="submit" id="">
-		  <i class="fa fa-times fa-2x" aria-hidden="true"></i>
-		</button>
-	  </form>
-  </td>
-</tr>
+  </tr>
 	<?php } //close while loop ?>
 </table>
 	<?php include("templates/contentstop.php"); ?>

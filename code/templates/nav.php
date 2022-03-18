@@ -4,7 +4,7 @@
 <ul class="navbar-nav mr-auto">
 <li><a class="nav-link" href="/">Home</a></li>
 <?php 
-	if ($_SESSION['authenticated']) {
+	if ($_SESSION['authenticated'] && $_SESSION['username']=='admin') {
 ?>
       <li class="nav-item">
         <a class="nav-link" href="/admin.php">Admin</a>

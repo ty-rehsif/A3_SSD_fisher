@@ -1,18 +1,30 @@
 <?php include("templates/page_header.php");?>
 <?php include("lib/auth.php") ?>
 <?php
-
-if($_SERVER['REQUEST_METHOD'] == 'GET') {
+try{
+if($_SERVER['REQUEST_METHOD'] == 'GET') { #reading the article
 	$aid = $_GET['aid'];	
 	$result=get_article($dbconn, $aid);
 	$row = pg_fetch_array($result, 0);
-} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	} 
+	elseif ($_SERVER['REQUEST_METHOD'] == 'POST') { # change the article
+	$result = "";
 	$title = $_POST['title'];
 	$content = $_POST['content'];
 	$aid = $_POST['aid'];
 	$result=update_article($dbconn, $title, $content, $aid);
-	Header ("Location: /");
-}
+	#if session username = admin redirect to admin page
+	if ($_SESSION['username']=='admin'){
+		Header ("Location: /admin.php");
+		}
+	#if session username = student redirect to student page
+	elseif($_SESSION['username']=='student'){
+		Header ("Location: /student.php");
+		}
+	}
+	}catch(Exception $e){
+		echo "Problem: ".$e->getMessage();
+	}
 ?>
 
 <!doctype html>
